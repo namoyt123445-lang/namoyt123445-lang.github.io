@@ -55,6 +55,11 @@
     <h3>Registered users</h3>
     <div id="users"></div>
   </div>
+
+  <div class="card">
+    <h3>Events</h3>
+    <div id="events"></div>
+  </div>
 </div>
 
 <script>
@@ -109,6 +114,17 @@ async function refresh(){
   document.getElementById("users").innerHTML =
     `<table><tr><th>Username</th><th>Created</th><th>Last seen</th><th>Status</th><th>Admin</th></tr>`+
     u.users.map(x=>`<tr><td>${esc(x.username)}</td><td>${new Date(x.createdAt*1000).toLocaleDateString()}</td><td>${new Date(x.lastSeen*1000).toLocaleString()}</td><td class="${x.online?'online':'offline'}">${x.online?'online':'offline'}</td><td class="${x.isAdmin?'admin':''}">${x.isAdmin?'yes':'no'}</td></tr>`).join("")+`</table>`;
+
+  const ev=await api("/admin/events");
+  const e=ev.json;
+  document.getElementById("events").innerHTML =
+    `<table><tr><th>Event</th><th>Multiplier</th><th>Status</th><th>Toggle</th></tr>`+
+    e.events.map(x=>`<tr><td>${esc(x.name)} <small>(${esc(x.id)})</small></td><td>${x.multiplier}x</td><td class="${x.enabled?'online':'offline'}">${x.enabled?'ON':'off'}</td><td><button onclick="toggleEvent('${esc(x.id)}',${!x.enabled})">${x.enabled?'Disable':'Enable'}</button></td></tr>`).join("")+`</table>`;
+}
+
+async function toggleEvent(id, enabled){
+  await fetch(API+"/admin/events/toggle",{method:"POST",headers:{Authorization:token,"Content-Type":"application/json"},body:JSON.stringify({id,enabled})});
+  await refresh();
 }
 
 document.getElementById("loginBtn").onclick=doLogin;
