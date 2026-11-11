@@ -60,8 +60,20 @@ SPDX-License-Identifier: AGPL-3.0-only
       // Prevent invasive install prompt (users are still able to install as an app)
       e.preventDefault();
     });
+
+    // Self-heal a stale cached HTML shell: if a hashed JS chunk from an older
+    // deploy is missing, reload once so the new build is picked up.
+    window.addEventListener('vite:preloadError', function () {
+      try {
+        var last = Number(sessionStorage.getItem('eon:asset-reload') || 0);
+        if (Date.now() - last > 30000) {
+          sessionStorage.setItem('eon:asset-reload', String(Date.now()));
+          window.location.reload();
+        }
+      } catch (e) { /* ignore */ }
+    });
   </script>
-  <script type="module" crossorigin src="./assets/index-hrAagNWY.js"></script>
+  <script type="module" crossorigin src="./assets/index-DQLkJCWR.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/chunk-Bv0JxpqV.js">
   <link rel="modulepreload" crossorigin href="./assets/common-S3K1s8cO.js">
   <link rel="modulepreload" crossorigin href="./assets/sprite-set-CJgXPWv7.js">
@@ -69,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
   <link rel="modulepreload" crossorigin href="./assets/BBCodeText-CmKOUNKb.js">
   <link rel="modulepreload" crossorigin href="./assets/FadeOut-B2k7vaBj.js">
   <link rel="modulepreload" crossorigin href="./assets/bbcodetext-DSOx9k46.js">
-  <link rel="stylesheet" crossorigin href="./assets/index-C7OIcPI1.css">
+  <link rel="stylesheet" crossorigin href="./assets/index-RTeDjXvz.css">
 </head>
 
 <body>
