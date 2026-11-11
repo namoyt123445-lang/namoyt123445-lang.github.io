@@ -1,1 +1,0 @@
-import{a as e,o as t}from"./data-BYwJPB4q.js";t();export{e as getDataTypeKey};
