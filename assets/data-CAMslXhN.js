@@ -1,0 +1,1 @@
+import{a as e,o as t}from"./data-C4Kspqz4.js";t();export{e as getDataTypeKey};
